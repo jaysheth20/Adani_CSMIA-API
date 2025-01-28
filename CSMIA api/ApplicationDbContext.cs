@@ -5,14 +5,14 @@ namespace CSMIA_api
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<FlightData> ArrivDomCurrent { get; set; }
-        public DbSet<FlightData> ArrivInterCurrent { get; set; }
-        public DbSet<FlightData> CArrivDomCurrent { get; set; }
-        public DbSet<FlightData> CArrivInterCurrent { get; set; }
-        public DbSet<FlightData> CDepDomCurrent { get; set; }
-        public DbSet<FlightData> CDepInterCurrent { get; set; }
-        public DbSet<FlightData> DepDomCurrent { get; set; }
-        public DbSet<FlightData> DepInterCurrent { get; set; }
+        public DbSet<FlightDataModel> ArrivDomCurrent { get; set; }
+        public DbSet<FlightDataModel> ArrivInterCurrent { get; set; }
+        public DbSet<FlightDataModel> CArrivDomCurrent { get; set; }
+        public DbSet<FlightDataModel> CArrivInterCurrent { get; set; }
+        public DbSet<FlightDataModel> CDepDomCurrent { get; set; }
+        public DbSet<FlightDataModel> CDepInterCurrent { get; set; }
+        public DbSet<FlightDataModel> DepDomCurrent { get; set; }
+        public DbSet<FlightDataModel> DepInterCurrent { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
