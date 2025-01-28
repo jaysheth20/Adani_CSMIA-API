@@ -1,0 +1,36 @@
+﻿@model List<CSMIA_api.Models.FlightData>
+
+@{
+    ViewData["Title"] = "Flight Data";
+}
+
+<h2>Flight Data</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Flight Name</th>
+            <th>Status</th>
+            <th>City Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var flight in Model)
+            {
+                <tr>
+                    <td>@flight.FlightNumber</td>
+                    <td>@flight.Status</td>
+                    <td>@flight.CityName</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No flight data available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
