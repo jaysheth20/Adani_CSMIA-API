@@ -1,32 +1,38 @@
 ﻿using System;
 using System.Globalization;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace CSMIA_api
 {
-
-    public class CustomDateTimeConverter : JsonConverter
+    public class CustomDateTimeConverter : JsonConverter<DateTime?>
     {
-        private readonly string[] _formats = { "dd/MM/yyyy HH:mm", "dd/MM/yyyy HH:mm:ss" };
+        private readonly string _dateFormat = "dd/MM/yyyy HH:mm";
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            writer.WriteValue(((DateTime)value).ToString("yyyy-MM-ddTHH:mm:ss"));
+            if (reader.TokenType == JsonTokenType.String)
+            {
+                var dateString = reader.GetString();
+                if (DateTime.TryParseExact(dateString, _dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date))
+                {
+                    return date;
+                }
+            }
+            return null;
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonToken.Null)
-                return null;
-
-            var dateString = reader.Value.ToString();
-            return DateTime.ParseExact(dateString, _formats, CultureInfo.InvariantCulture, DateTimeStyles.None);
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(DateTime) || objectType == typeof(DateTime?);
+            if (value.HasValue)
+            {
+                writer.WriteStringValue(value.Value.ToString(_dateFormat, CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                writer.WriteNullValue();
+            }
         }
     }
 }

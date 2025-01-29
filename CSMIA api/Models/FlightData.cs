@@ -1,73 +1,73 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace CSMIA_api.Models
 {
     public class FlightData
     {
-        [JsonProperty("UID")]
+        [JsonPropertyName("UID")]
         public long UID { get; set; }
 
-        [JsonProperty("airline_code")]
+        [JsonPropertyName("airline_code")]
         public string AirlineCode { get; set; }
 
-        [JsonProperty("Flight_number")]
+        [JsonPropertyName("Flight_number")]
         public string FlightNumber { get; set; }
 
-        [JsonProperty("StatusCode")]
+        [JsonPropertyName("StatusCode")]
         public string StatusCode { get; set; }
 
-        [JsonProperty("Status")]
+        [JsonPropertyName("Status")]
         public string Status { get; set; }
 
-        [JsonProperty("city_name")]
+        [JsonPropertyName("city_name")]
         public string CityName { get; set; }
 
-        [JsonProperty("CITY_CODE")]
+        [JsonPropertyName("CITY_CODE")]
         public string CityCode { get; set; }
 
-        [JsonProperty("Nature")]
+        [JsonPropertyName("Nature")]
         public string Nature { get; set; }
 
-        [JsonProperty("Qualifier")]
+        [JsonPropertyName("Qualifier")]
         public string Qualifier { get; set; }
 
-        [JsonProperty("SCHED_DATE")]
+        [JsonPropertyName("SCHED_DATE")]
         [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime? SchedDate { get; set; }
 
-        [JsonProperty("EST_DATE")]
+        [JsonPropertyName("EST_DATE")]
         [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime? EstDate { get; set; }
 
-        [JsonProperty("ACT_DATE")]
+        [JsonPropertyName("ACT_DATE")]
         [JsonConverter(typeof(CustomDateTimeConverter))]
         public DateTime? ActDate { get; set; }
 
-        [JsonProperty("Terminal")]
+        [JsonPropertyName("Terminal")]
         public string Terminal { get; set; }
 
-        [JsonProperty("RegistrationNo")]
+        [JsonPropertyName("RegistrationNo")]
         public string RegistrationNo { get; set; }
 
-        [JsonProperty("GATES")]
+        [JsonPropertyName("GATES")]
         public string Gates { get; set; }
 
-        [JsonProperty("Counters")]
+        [JsonPropertyName("Counters")]
         public string Counters { get; set; }
 
-        [JsonProperty("Carousels")]
+        [JsonPropertyName("Carousels")]
         public string Carousels { get; set; }
 
-        [JsonProperty("CODESHARE1")]
+        [JsonPropertyName("CODESHARE1")]
         public string CodeShare1 { get; set; }
 
-        [JsonProperty("CODESHARE2")]
+        [JsonPropertyName("CODESHARE2")]
         public string CodeShare2 { get; set; }
 
-        [JsonProperty("UPDATETIMESTAMP")]
+        [JsonPropertyName("UPDATETIMESTAMP")]
         public DateTime? UpdatedTimeStmp { get; set; }
 
-        [JsonProperty("Stand")]
+        [JsonPropertyName("Stand")]
         public string Stand { get; set; }
     }
 }

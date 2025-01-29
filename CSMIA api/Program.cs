@@ -11,7 +11,6 @@ builder.Services.AddControllersWithViews();
 // Add DbContext before calling builder.Build()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddSingleton<FlightController>();
 
 //builder.Services.AddHangfire(configuration => configuration.UseSqlServerStorage("DefaultConnection"));
 //builder.Services.AddHangfireServer();
