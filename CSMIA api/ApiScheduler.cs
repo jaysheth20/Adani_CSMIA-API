@@ -7,6 +7,7 @@ using System.Data;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CSMIA_api
 {
@@ -71,14 +72,14 @@ namespace CSMIA_api
             using (var connection = new SqlConnection(conn))
             {
                 connection.Open();
-                SaveFlightData(FilterFlightData(flightList, "DA", "S"), "ArrivDomCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "IA", "S"), "ArrivInterCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "DA", "F"), "CArrivDomCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "IA", "F"), "CArrivInterCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "DD", "F"), "CDepDomCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "ID", "F"), "CDepInterCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "DD", "S"), "DepDomCurrent_SP", connection);
-                SaveFlightData(FilterFlightData(flightList, "ID", "S"), "DepInterCurrent_SP", connection);
+                SaveFlightData(FilterFlightData(flightList, "DA", "S"), "ArrivDomCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "IA", "S"), "ArrivInterCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "DA", "F"), "CArrivDomCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "IA", "F"), "CArrivInterCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "DD", "F"), "CDepDomCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "ID", "F"), "CDepInterCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "DD", "S"), "DepDomCurrent", connection);
+                SaveFlightData(FilterFlightData(flightList, "ID", "S"), "DepInterCurrent", connection);
             }
         }
 
@@ -91,11 +92,12 @@ namespace CSMIA_api
             return flightList.Where(x => x.Nature == nature && x.Qualifier == qualifier).ToList();
         }
 
-        private DynamicParameters SetDynamicParam(string jsonData)
+        private DynamicParameters SetDynamicParam(string jsonData,string tableName)
         {
             List<SetParameters> parameters = new List<SetParameters>()
             {
                 new SetParameters() { ParameterName = "@flightFeedData", Value = jsonData },
+                new SetParameters() { ParameterName = "@TableName", Value = tableName },
             };
 
             DynamicParameters dbparameters = new DynamicParameters();
@@ -110,17 +112,13 @@ namespace CSMIA_api
             return dbparameters;
         }
 
-        private void SaveFlightData(List<FlightData> data, string sp,SqlConnection connection)
+        private void SaveFlightData(List<FlightData> data, string tableName, SqlConnection connection)
         {
             if (data != null && data.Count > 0)
             {
                 string jsonData = JsonSerializer.Serialize(data);
-                DynamicParameters param = SetDynamicParam(jsonData);
-                //using (var connection = new SqlConnection(conn))
-                //{
-                //    connection.Open();
-                    connection.Execute(sp, param, commandType: CommandType.StoredProcedure);
-                //}
+                DynamicParameters param = SetDynamicParam(jsonData, tableName);
+                connection.Execute("InsertOrUpdateFlightData_SP", param, commandType: CommandType.StoredProcedure);
             }
         }
 
